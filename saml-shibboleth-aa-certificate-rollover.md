@@ -40,7 +40,7 @@ This document describes correct certificate rollover technique for standalone SA
 
 3. Update federation metadata and wait for distribution to all Service Providers.
 4. Change certificate within Apache HTTPD and Shibboleth IdP.
-5. Restart Apache and Shibboleth IdP.
+5. Restart Apache HTTPD and Tomcat services.
 6. Drop the old certificate from metadata.
 7. Update federation metadata.
 
