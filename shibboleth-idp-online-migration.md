@@ -57,7 +57,7 @@ Ve druhém kroku necháme starý server v DNS přejmenovat z `idp.example.org` n
 
 Ten, kdo má stále nakešované staré DNS záznamy, se připojí na staré IdP, přihlásí se a vše funguje. Ten, kdo má již nové DNS záznamy, se připojí na nové IdP, přihlásí se a také vše funguje.
 
-Ve třetím kroku necháme zvýšit hodnoty TTL na standardní úroveň a migrace je hotova. Starý server (včetně DNS záznamu `idp-old.example.org` a alokované IP adresy) můžeme zrušit.
+Ve třetím kroku necháme zvýšit hodnoty TTL na standardní úroveň a migrace je hotova. Starý server (včetně DNS záznamu `idp-old.example.org` a alokované IP adresy) můžeme zrušit.  Samozřejmostí je také odebrání záznamů z `/etc/hosts`.
 
 ## Kontakt
 
