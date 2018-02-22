@@ -1,4 +1,4 @@
-# Migrace Shibboleth IdP
+# Online migrace Shibboleth IdP
 
 ## Úvod
 
