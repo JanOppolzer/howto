@@ -2,20 +2,44 @@
 
 Tento návod navazuje na [předchozí variantu pro Debian 8 (Jessie)](https://github.com/JanOppolzer/howto/blob/master/debian-8-jessie-dokuwiki-farming-apache-shibboleth-sp.md), avšak liší se v tom, že v Debianu 9 (Stretch) již není DokuWiki v balíčkovacím systému a je tedy nutné nainstalovat ji ze zdrojových kódů.
 
-FIXME: úvod -- co, proč, atd.
+## Úvod
+
+V případě, že chceme provozovat několik různých DokuWiki instancí pro různé projekty, není potřeba mít pro každou DokuWiki vlastní [virtuální nebo fyzický] server a starat se tak o několik operačních systémů. Je možné použít tzv. [DokuWiki Farming](https://www.dokuwiki.org/farms).
+
+Všechny instance sdílí jednu instalaci DokuWiki a také rozšíření. Mají však své vlastní stránky a také nastavení (přístupová práva, vzhled, použitá rozšíření, způsob přihlašování, ...).
+
+Tento dokument počítá s tím, že všechny instance budou používat přihlašování pomocí [České akademické federace identit eduID.cz](https://www.eduid.cz). To je implementováno pomocí rozšíření [dokuwiki-shibboleth-auth](https://github.com/JanOppolzer/dokuwiki-shibboleth-auth). Zároveň hostující server bude z pohledu federace jeden poskytovatel služby neboli jedna služba (Service Provider, SP) s jedním *entityID*. Jednotlivé instance DokuWiki běžící na svých vlastních adresách (doménách) budou mít své "koncové body" (endpointy) uvedeny v metadatech jediné entity. V návodu je použit CESNETí "linker" (horní záhlaví/hlavička) a [jednotný vzhled pro DokuWiki](https://wiki.cesnet.cz/doku.php?id=groups:weby:dokuwiki:start).
+
+Níže popsaný přístup sníží nároky jak na správu operačních systémů (bude nutné spravovat jen jeden operační systém), tak instalace DokuWiki i federativní autentizace. Jeden operační systém, jedna instalace DokuWiki, jeden Shibboleth SP s jedním certifikátem atd. Budeme-li mít certifikát pro webserver obsahující v alternativních jménech všechny potřebné domény (doporučený způsob), budeme mít i jeden SSL certifikát. Znamená to ovšem, že když vyprší SSL certifikát, vyprší pro všechny instance najednou (ano, vyplatí se monitorovat). Rozbije-li se DokuWiki např. při neopatrné aktualizaci, rozbije to všechny instance najednou. (*With great power comes great responsibility.*)
+
+V krocích níže se předpokládá použití [Debianu 9](https://www.debian.org/releases/stretch/) s kódovým označením [Stretch](https://www.debian.org/releases/stretch/).
+
+Jako první nainstalujeme a nakonfigurujeme Apache a zprovozníme si virtuální hosty včetně SSL konfigurace. Následně nainstalujeme a nakonfigurujeme Shibboleth SP a zprovozníme federativní přihlašování. Poté bude na řadě instalace a konfigurace DokuWiki a její nakonfigurování v Apachi. Posledním krokem, který bude v řadě případů nepotřebný, bude návod, jak převést stávající DokuWiki instance na novou instalaci -- to pro případ, že byste konsolidovali více existujících instancí DokuWiki na několika serverech na jeden server.
 
 ## Konvence
 
-FIXME: certifikát s altHostName
+V návodu používám následující:
+
+* DNS název fyzického serveru (hostname): `blackhole.cesnet.cz`
+* entityID služby ve federaci: `https://blackhole.cesnet.cz/shibboleth`
+* hostované weby/domény: `blackhole.cesnet.cz`, `blackhole1.cesnet.cz`, `blackhole2.cesnet.cz`
+* SSL certifikát se všemi hostovanými doménami: `/etc/ssl/certs/blackhole.cesnet.cz.crt.pem`
+* privátní klíč k SSL certifikátu: `/etc/ssl/private/blackhole.cesnet.cz.key.pem`
+* řetěz certifikátů až ke kořenové CA: `/etc/ssl/certs/chain_TERENA_SSL_CA_3.pem`
 
 ## Aktualizace
 
-Před začátkem nejprve aktualizujeme systém a v případě potřeby restartujeme server.
+Před začátkem nejprve aktualizujeme systém:
 
 ```bash
 apt update
 apt upgrade
-# shutdown -r now
+```
+
+V případě potřeby (např. když bude k dispozici nové jádro) restartujeme server:
+
+```bash
+shutdown -r now
 ```
 
 ## Apache
@@ -61,7 +85,7 @@ Nejprve nakonfigurujeme server `blackhole.cesnet.cz`. Vytvoříme konfigurační
 </VirtualHost>
 ```
 
-FIXME: HTTP hlavičky
+**FIXME: HTTP hlavičky**
 
 
 Vytvoříme adresář `/var/www/blackhole.cesnet.cz/` a v něm soubor `index.html` obsahující pouze text `blackhole.cesnet.cz`.
@@ -174,7 +198,7 @@ Nyní ověříme, že se dostaneme na všechny weby a to jak protokolem _HTTP_ (
 
 ### PHP
 
-Pro běh DokuWiki budeme potřebovat interpret jazyku PHP, ten nainstalujeme standardním způsobem z balíčkovacího systému.
+Pro běh _DokuWiki_ budeme potřebovat interpret jazyku _PHP_, ten nainstalujeme standardním způsobem z balíčkovacího systému.
 
 ```bash
 apt install php php-gd php-xml
@@ -241,7 +265,7 @@ Metadata služby musíme obohatit o další informace -- přidáme atribut `temp
 <Handler type="MetadataGenerator" Location="/Metadata" signing="false" template="metadata-template.xml"/>
 ```
 
-Můžeme si povolit zobrazení atributů na diagnostrické stránce (`https://blackhole.cesnet.cz/Shibboleth.sso/Session`):
+Můžeme si povolit zobrazení hodnot atributů na diagnostrické stránce (`https://blackhole.cesnet.cz/Shibboleth.sso/Session`):
 
 ```xml
 <Handler type="Session" Location="/Session" showAttributeValues="true"/>
