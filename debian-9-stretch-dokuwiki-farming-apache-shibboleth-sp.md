@@ -1,4 +1,4 @@
-# DokuWiki Farmin s Apache a Shibboleth SP na Debianu 9 (Stretch)
+# DokuWiki Farming s Apache a Shibboleth SP na Debianu 9 (Stretch)
 
 Tento návod navazuje na [předchozí variantu pro Debian 8 (Jessie)](https://github.com/JanOppolzer/howto/blob/master/debian-8-jessie-dokuwiki-farming-apache-shibboleth-sp.md), avšak liší se v tom, že v Debianu 9 (Stretch) již není DokuWiki v balíčkovacím systému a je tedy nutné nainstalovat ji ze zdrojových kódů.
 
