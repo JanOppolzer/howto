@@ -704,5 +704,9 @@ FIXME
 
 ### Migrace stávajících DokuWiki instancí
 
-FIXME
+Chceme-li [přenést](https://www.dokuwiki.org/faq:servermove) stávající DokuWiki do námi právě vytvořené "farmy", stačí přenést **celý datový adresář** (na Debianu 8/Jessie se jedná o adresář `/var/lib/dokuwiki/data/`) ze starého serveru na nový. Musíme však pamatovat na správné umístění na novém serveru s farmou, tedy `/var/www/farm/<jméno_dokuwiki_instance>/data/`, přičemž novou instanci si nejprve vytvoříme příkazem `dokuwiki-addsite <jméno_dokuwiki_instance>`.
+
+Aby nedošlo ke změně posledních úprav u jednotlivých souborů, je vhodné na starém serveru *datový adresář* zabalit do TAR archivu a po přesunu na nový server archiv rozbalit. Je třeba též dodržet správná přístupová práva.
+
+Musíme také samozřejmě vytvořit odpovídající virtuální host v Apachi, zažádat si o nový SSL certifikát s dodatečnou doménou pro novou instanci DokuWiki a zařídit změnu DNS záznamů. Pak už opravdu stačí jen příkazem `dokuwiki-addsite` vytvořit tuto novou instanci a překopírovat datový adresář. Následně ještě musíme provést potřebné konfigurační úpravy DokuWiki nové instance a zkontrolovat všechna potřebná rozšíření.
 
