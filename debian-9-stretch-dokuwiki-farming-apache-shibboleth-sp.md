@@ -688,14 +688,14 @@ FIXME
 Nechceme, aby se na stránce zobrazoval přihlašovací formulář, pokud nepřihlášený uživatel přistoupí na chráněnou stránku. Přihlašování se má dít pomocí kliknutí na tlačítko "Přihlásit" v záhlaví (linkeru), výběru domovské organizace z WAYFu a následně vyplněním přihlašovacích údajů na stránce domovské organizace. Toho docílíme triviální úpravou, kdy zakomentujeme na příslušném místě řádek s funkcí `html_login()` a vypíšeme informaci *"Možná jste se zapomněl(a) přihlásit.* Úpravu provedeme v souboru `/var/lib/dokuwiki/inc/html.php` ve funkci `html_denied()` na řádcích 86 a 87 takto:
 
 ```php
-  82 function html_denied() {
-  83     print p_locale_xhtml('denied');
-  84
-  85     if(empty($_SERVER['REMOTE_USER'])){
-  86         //html_login();
-  87         print "<p>Možná jste se zapomněl(a) přihlásit.</p>";
-  88     }
-  89 }
+82 function html_denied() {
+83     print p_locale_xhtml('denied');
+84
+85     if(empty($_SERVER['REMOTE_USER'])){
+86         //html_login();
+87         print "<p>Možná jste se zapomněl(a) přihlásit.</p>";
+88     }
+89 }
 ```
 
 #### Rozšíření XYZ
