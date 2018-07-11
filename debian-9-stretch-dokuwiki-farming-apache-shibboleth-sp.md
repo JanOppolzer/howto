@@ -72,10 +72,10 @@ Nejprve nakonfigurujeme server `blackhole.cesnet.cz`. Vytvoříme konfigurační
     ErrorLog                ${APACHE_LOG_DIR}/ssl-error-blackhole.log
     CustomLog               ${APACHE_LOG_DIR}/ssl-access-blackhole.log combined
 
-    SSLEngine               On    
-    SSLProtocol             All -SSLv2 -SSLv3    
-    SSLHonorCipherOrder     On    
-    SSLCompression          Off    
+    SSLEngine               On
+    SSLProtocol             All -SSLv2 -SSLv3
+    SSLHonorCipherOrder     On
+    SSLCompression          Off
     Header                  always set Strict-Transport-Security "max-age=15768000"
     SSLCipherSuite          'EDH+CAMELLIA:EDH+aRSA:EECDH+aRSA+AESGCM:EECDH+aRSA+SHA384:EECDH+aRSA+SHA256:EECDH:+CAMELLIA256:+AES256:+CAMELLIA128:+AES128:+SSLv3:!aNULL:!eNULL:!LOW:!3DES:!MD5:!EXP:!PSK:!DSS:!RC4:!SEED:!ECDSA:CAMELLIA256-SHA:AES256-SHA:CAMELLIA128-SHA:AES128-SHA'
 
@@ -132,10 +132,10 @@ Konfigurační soubor `/etc/apache2/sites-available/blackhole1.cesnet.cz.conf`:
     ErrorLog                ${APACHE_LOG_DIR}/ssl-error-blackhole1.log
     CustomLog               ${APACHE_LOG_DIR}/ssl-access-blackhole1.log combined
 
-    SSLEngine               On    
-    SSLProtocol             All -SSLv2 -SSLv3    
-    SSLHonorCipherOrder     On    
-    SSLCompression          Off    
+    SSLEngine               On
+    SSLProtocol             All -SSLv2 -SSLv3
+    SSLHonorCipherOrder     On
+    SSLCompression          Off
     Header                  always set Strict-Transport-Security "max-age=15768000"
     SSLCipherSuite          'EDH+CAMELLIA:EDH+aRSA:EECDH+aRSA+AESGCM:EECDH+aRSA+SHA384:EECDH+aRSA+SHA256:EECDH:+CAMELLIA256:+AES256:+CAMELLIA128
 
@@ -167,10 +167,10 @@ Konfigurační soubor `/etc/apache2/sites-available/blackhole2.cesnet.cz.conf`:
     ErrorLog                ${APACHE_LOG_DIR}/ssl-error-blackhole2.log
     CustomLog               ${APACHE_LOG_DIR}/ssl-access-blackhole2.log combined
 
-    SSLEngine               On    
-    SSLProtocol             All -SSLv2 -SSLv3    
-    SSLHonorCipherOrder     On    
-    SSLCompression          Off    
+    SSLEngine               On
+    SSLProtocol             All -SSLv2 -SSLv3
+    SSLHonorCipherOrder     On
+    SSLCompression          Off
     Header                  always set Strict-Transport-Security "max-age=15768000"
     SSLCipherSuite          'EDH+CAMELLIA:EDH+aRSA:EECDH+aRSA+AESGCM:EECDH+aRSA+SHA384:EECDH+aRSA+SHA256:EECDH:+CAMELLIA256:+AES256:+CAMELLIA128
 
@@ -554,7 +554,40 @@ chown www-data /opt/dokuwiki/conf/
 V konfiguraci Apache musíme dále provést následující změny, aby se zobrazovala DokuWiki:
 
 ```apache
+<VirtualHost *:80>
+    ServerName              blackhole.cesnet.cz
+    ServerAdmin             jan.oppolzer@cesnet.cz
+
+    Redirect                permanent / https://blackhole.cesnet.cz/
+
+    ErrorLog                ${APACHE_LOG_DIR}/error-blackhole.log
+    CustomLog               ${APACHE_LOG_DIR}/access-blackhole.log combined
+</VirtualHost>
+
+<VirtualHost *:443>
+    ServerName              blackhole.cesnet.cz
+    ServerAdmin             jan.oppolzer@cesnet.cz
+
     DocumentRoot            /opt/dokuwiki
+
+    ErrorLog                ${APACHE_LOG_DIR}/ssl-error-blackhole.log
+    CustomLog               ${APACHE_LOG_DIR}/ssl-access-blackhole.log combined
+
+    SSLEngine               On
+    SSLProtocol             All -SSLv2 -SSLv3
+    SSLHonorCipherOrder     On
+    SSLCompression          Off
+    Header                  always set Strict-Transport-Security "max-age=15768000"
+    SSLCipherSuite          'EDH+CAMELLIA:EDH+aRSA:EECDH+aRSA+AESGCM:EECDH+aRSA+SHA384:EECDH+aRSA+SHA256:EECDH:+CAMELLIA256:+AES256:+CAMELLIA128:+AES128:+SSLv3:!aNULL:!eNULL:!LOW:!3DES:!MD5:!EXP:!PSK:!DSS:!RC4:!SEED:!ECDSA:CAMELLIA256-SHA:AES256-SHA:CAMELLIA128-SHA:AES128-SHA'
+
+    SSLCertificateFile      /etc/ssl/certs/blackhole.cesnet.cz.crt.pem
+    SSLCertificateKeyFile   /etc/ssl/private/blackhole.cesnet.cz.key.pem
+    SSLCertificateChainFile /etc/ssl/certs/chain_TERENA_SSL_CA_3.pem
+
+    <Location />
+        AuthType shibboleth
+        Require shibboleth
+    </Location>
 
     <Directory /opt/dokuwiki>
         DirectoryIndex doku.php
@@ -563,9 +596,8 @@ V konfiguraci Apache musíme dále provést následující změny, aby se zobraz
               
         AuthType shibboleth
         Require shibboleth
-        #ShibRequireSession Off 
-        ##ShibRequestSetting requireSession 1
-        ShibRequestSetting  requireSession 0
+        ShibRequestSetting  requireSession 0    # lazy sessions
+        #ShibRequestSetting requireSession 1    # required sessions (only authenticated users)
 
         Order Deny,Allow
         Allow from all
@@ -576,13 +608,13 @@ V konfiguraci Apache musíme dále provést následující změny, aby se zobraz
         RewriteRule ^_media/(.*)              lib/exe/fetch.php?media=$1  [QSA,L]
         RewriteRule ^_detail/(.*)             lib/exe/detail.php?media=$1  [QSA,L]
         RewriteRule ^_export/([^/]+)/(.*)     doku.php?do=export_$1&id=$2  [QSA,L]
-        #RewriteRule ^$                        doku.php?id=cs:index  [L] 
         RewriteRule ^$                        doku.php  [L]
         RewriteCond %{REQUEST_FILENAME}       !-f
         RewriteCond %{REQUEST_FILENAME}       !-d
         RewriteRule (.*)                      doku.php?id=$1  [QSA,L]
         RewriteRule ^index.php$               doku.php
     </Directory>
+</VirtualHost>
 ```
 
 Aby fungovaly "hezké adresy", které jsme nakonfigurovali výše, musíme povolit modul `rewrite` a restartovat Apache:
@@ -592,16 +624,17 @@ a2enmode rewrite
 systemctl restart apache2
 ```
 
-Nyní si vytvoříme adresář pro jednotlivé instance DokuWiki (v angličtině *animal*) a zároveň si připravíme soubor `preload.php`, kde nastavíme tzv. "farming":
+Nyní si vytvoříme adresář pro jednotlivé instance DokuWiki (v angličtině *animal*) a zároveň si připravíme soubor `preload.php`, kde zapneme tzv. "farming":
 
 ```bash
 mkdir -p /var/www/farm/
-cd /opt/dokuwiki/inc && cp preload.php.dist preload.php
+cp /opt/dokuwiki/inc/preload.php.dist /opt/dokuwiki/inc/preload.php
 ```
 
 V souboru `preload.php`, který jsme si zkopírovali z výchozího distribučního souboru `preload.php.dist`, musíme odkomentovat zakomentované řádky a zakážeme přístup k takzvanému "farmáři" (anglicky *farmer*), což je základní instance DokuWiki. Soubor `preload.php` bude tedy vypadat následujícím způsobem:
 
 ```php
+<?php
 // preload.php
 
 // set this to your farm directory
