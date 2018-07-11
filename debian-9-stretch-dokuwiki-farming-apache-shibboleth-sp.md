@@ -584,15 +584,22 @@ V konfiguraci Apache musíme dále provést následující změny, aby se zobraz
         RewriteRule ^index.php$               doku.php
     </Directory>
 ```
+
+Aby fungovaly "hezké adresy", které jsme nakonfigurovali výše, musíme povolit modul `rewrite` a restartovat Apache:
+
 ```bash
 a2enmode rewrite
 systemctl restart apache2
 ```
 
+Nyní si vytvoříme adresář pro jednotlivé instance DokuWiki (v angličtině *animal*) a zároveň si připravíme soubor `preload.php`, kde nastavíme tzv. "farming":
+
 ```bash
 mkdir -p /var/www/farm/
 cd /opt/dokuwiki/inc && cp preload.php.dist preload.php
 ```
+
+V souboru `preload.php`, který jsme si zkopírovali z výchozího distribučního souboru `preload.php.dist`, musíme odkomentovat zakomentované řádky a zakážeme přístup k takzvanému "farmáři" (anglicky *farmer*), což je základní instance DokuWiki. Soubor `preload.php` bude tedy vypadat následujícím způsobem:
 
 ```php
 // preload.php
@@ -617,19 +624,19 @@ git clone https://github.com/JanOppolzer/dokuwiki-shibboleth-auth
 cp -r dokuwiki-shibboleth-auth/plugin/authshibboleth/ /opt/dokuwiki/lib/plugins/
 ```
 
-### Farmer
+### Animal #1
 
 ```bash
 dokuwiki-addsite blackhole.cesnet.cz
 ```
 
-### Animal #1
+### Animal #2
 
 ```bash
 dokuwiki-addsite blackhole1.cesnet.cz
 ```
 
-### Animal #2
+### Animal #3
 
 ```bash
 dokuwiki-addsite blackhole1.cesnet.cz
