@@ -522,29 +522,38 @@ systemctl reload apache2
 
 ## DokuWiki
 
-FIXME
+Jelikož DokuWiki již není součástí balíčkovacího systému Debianu (alespoň ne ve verzi 9 s kódovým označením Stretch), nezbývá než stáhnout si archiv ze [stránek projektu](https://download.dokuwiki.org/).
+
+### Stažení
+
+V době psaní tohoto dokumentu (11. července 2018) je k dispozici [poslední stabilní](https://download.dokuwiki.org/src/dokuwiki/dokuwiki-stable.tgz) (a také doporučená) verze *2018-04-22a "Greebo"*.
 
 ```bash
 mkdir -p /opt/src
-cd /opt/src
-wget https://download.dokuwiki.org/src/dokuwiki/dokuwiki-stable.tgz
+wget -P /opt/src https://download.dokuwiki.org/src/dokuwiki/dokuwiki-stable.tgz
 ```
 
+### Instalace
+
+Instalaci provedeme jednoduchým rozbalením zdrojových kódů, vytvořením symbolického odkazu `/opt/dokuwiki` směrujícím na právě rozbalenou verzi a změnou práv ke všem souborům v DokuWiki pro uživatele *root* a skupinu *root*, aby Apache (uživatel *www-data*) nemohl modifikovat žádné soubory. Symbolický odkaz nám v budoucnu umožní snadnou aktualizaci, která bude spočívat ve třech krocích: stažení nové verze, rozbalení nové verze a úpravě symbolického odkazu. Zároveň se změnou symbolického odkazu na původní hodnotu budeme moci vrátit zpět k předešlé verzi DokuWiki, pokud by nová verze nefungovala správně.
+
 ```bash
-cd /opt
-tar -xzf src/dokuwiki-stable.tgz
-chown -R root:root dokuwiki-2018-04-22a
-ln -s dokuwiki-2018-04-22a dokuwiki
+tar -xzf /opt/src/dokuwiki-stable.tgz -C /opt
+chown -R root:root /opt/dokuwiki-2018-04-22a/
+ln -s /opt/dokuwiki-2018-04-22a /opt/dokuwiki
 ```
+
+Do některých adresářů však naopak Apache (uživatel *www-data*) přístup potřebuje, proto u nich práva změníme:
 
 ```bash
 chown -R www-data /opt/dokuwiki/data/
-chown www-data /opt/dokuwiki/lib/plugins/ # -R ?
+chown www-data /opt/dokuwiki/lib/plugins/
 chown www-data /opt/dokuwiki/conf/
 ```
 
+V konfiguraci Apache musíme dále provést následující změny, aby se zobrazovala DokuWiki:
+
 ```apache
-    #DocumentRoot            /var/www/aaiwiki.cesnet.cz/
     DocumentRoot            /opt/dokuwiki
 
     <Directory /opt/dokuwiki>
