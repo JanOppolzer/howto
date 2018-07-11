@@ -1,0 +1,23 @@
+#! /bin/sh
+set -e
+
+if [ $# -ne 1 ]
+then
+    echo "Usage: $0 SITE_NAME"
+    exit 1
+fi
+
+site_name="$1"
+site_dir="/var/www/farm/$site_name"
+#conf_dir="$site_dir/conf"
+
+echo "removing animal $site_name"
+
+rm -rf $site_dir
+#rm -rf $conf_dir
+
+echo "finished!"
+echo "bye!"
+ 
+exit 0
+
