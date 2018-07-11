@@ -657,6 +657,10 @@ git clone https://github.com/JanOppolzer/dokuwiki-shibboleth-auth
 cp -r dokuwiki-shibboleth-auth/plugin/authshibboleth/ /opt/dokuwiki/lib/plugins/
 ```
 
+### Skripty pro "farming"
+
+Přestože existují rozšíření [Farmer Plugin](https://www.dokuwiki.org/plugin:farmer) (kvalitní dokumentace a poměrně hezké grafické rozhraní) nebo [farmsync Plugin](https://www.dokuwiki.org/plugin:farmsync), které "farming" výrazně zjednodušují, my půjdeme jinou cestou. V [dokumentaci](https://www.dokuwiki.org/farms) je velice kvalitně popsán ruční způsob, nad kterým byly v balíčku DokuWiki pro Debian 8 (Jessie) napsány dva skripty -- `dokuwiki-addsite` pro vytvoření nové instance a `dokuwiki-delsite` pro odstranění stávající instance. Tyto dva skripty z Debianu Jessie jsem lehce upravil pro naše použití a jsou k dispozici zde: [dokuwiki-addsite](), [dokuwiki-delsite]().
+
 ### Animal #1
 
 ```bash
@@ -682,6 +686,20 @@ FIXME
 #### Přihlašovací formulář
 
 FIXME
+
+Nechceme, aby se na stránce zobrazoval přihlašovací formulář, pokud nepřihlášený uživatel přistoupí na chráněnou stránku. Přihlašování se má dít pomocí kliknutí na tlačítko "Přihlásit" v záhlaví (linkeru), výběru domovské organizace z WAYFu a následně vyplněním přihlašovacích údajů na stránce domovské organizace. Toho docílíme triviální úpravou, kdy zakomentujeme na příslušném místě řádek s funkcí `html_login()` a vypíšeme informaci *"Možná jste se zapomněl(a) přihlásit.* Úpravu provedeme v souboru `/var/lib/dokuwiki/inc/html.php` ve funkci `html_denied()` na řádcích 86 a 87 takto:
+
+```php
+  82 function html_denied() {
+  83     print p_locale_xhtml('denied');
+  84
+  85     if(empty($_SERVER['REMOTE_USER'])){
+  86         //html_login();
+  87         print "<p>Možná jste se zapomněl(a) přihlásit.</p>";
+  88     }
+  89 }
+```
+
 
 #### Rozšíření XYZ
 
