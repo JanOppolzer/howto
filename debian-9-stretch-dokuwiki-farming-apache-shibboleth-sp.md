@@ -685,8 +685,6 @@ FIXME
 
 #### Přihlašovací formulář
 
-FIXME
-
 Nechceme, aby se na stránce zobrazoval přihlašovací formulář, pokud nepřihlášený uživatel přistoupí na chráněnou stránku. Přihlašování se má dít pomocí kliknutí na tlačítko "Přihlásit" v záhlaví (linkeru), výběru domovské organizace z WAYFu a následně vyplněním přihlašovacích údajů na stránce domovské organizace. Toho docílíme triviální úpravou, kdy zakomentujeme na příslušném místě řádek s funkcí `html_login()` a vypíšeme informaci *"Možná jste se zapomněl(a) přihlásit.* Úpravu provedeme v souboru `/var/lib/dokuwiki/inc/html.php` ve funkci `html_denied()` na řádcích 86 a 87 takto:
 
 ```php
@@ -699,7 +697,6 @@ Nechceme, aby se na stránce zobrazoval přihlašovací formulář, pokud nepři
   88     }
   89 }
 ```
-
 
 #### Rozšíření XYZ
 
