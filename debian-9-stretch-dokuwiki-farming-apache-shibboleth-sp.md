@@ -700,11 +700,11 @@ Vytvoříme si první instanci:
 dokuwiki-addsite blackhole.cesnet.cz
 ```
 
-Veškerá data (= stránky, které vytvoříme) jsou uložena v adresáři `/var/www/farm/azog.cesnet.cz/data/`. Všechna nastavení v adresáři `/var/www/farm/azog.cesnet.cz/conf/`, kde musíme provést určité změny.
+Veškerá data (= stránky, které vytvoříme) jsou uložena v adresáři `/var/www/farm/blackhole.cesnet.cz/data/`. Všechna nastavení v adresáři `/var/www/farm/blackhole.cesnet.cz/conf/`, kde musíme provést určité změny.
 
 #### Federativní autentizace
 
-V souboru `/var/www/farm/blackhole.cesnet.cz/authshibboleth.conf.php` si nastavíme mapování skupin z Atributové autority (Peruna) na skupiny v DokuWiki:
+V souboru `/var/www/farm/blackhole.cesnet.cz/conf/authshibboleth.conf.php` si nastavíme mapování skupin z Atributové autority (Peruna) na skupiny v DokuWiki:
 
 ```php
 <?php
@@ -731,6 +731,28 @@ $conf['plugin']['authshibboleth'] = array(
                 'path' => __DIR__ . '/custom_groups.php'
             )
         )
+    ),
+);
+```
+
+V případě potřeby je možné zavádět lokální výjimky pro skupiny. To se nastavuje v souboru `/var/www/farm/blackhole.cesnet.cz/conf/custom_groups.php`, kde je možné staticky definovat vlastní skupiny. Soubor obsahuje příklady, které je vhodné smazat nebo alespoň zakomentovat, pokud se tento soubor bude díky předchozí konfiguraci načítat.
+
+```php
+<?php
+
+return array(
+    'admins' => array(
+        //'tester',
+        //'foobar'
+    ),
+
+    'internal_users' => array(
+        //'novakoi',
+        //'tester'
+    ),
+
+    'idp_doku' => array(
+        //'foo'
     ),
 );
 ```
