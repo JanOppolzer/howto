@@ -763,6 +763,21 @@ return array(
 );
 ```
 
+#### Grafická šablona pro CESNET
+
+Zajisté chceme, aby naše DokuWiki využívala grafickou šablonu pro CESNET. Tu si stáheme z *git* repozitáře na serveru [homeproj.cesnet.cz](https://homeproj.cesnet.cz) a vytvoříme symbolický odkaz na grafické téma do DokuWiki:
+
+```bash
+git clone jop@homeproj.cesnet.cz:design-dokuwiki /opt/src/design-dokuwiki
+ln -s /opt/src/design-dokuwiki /opt/dokuwiki/lib/tpl/cesnet
+```
+
+Teď již jen zbývá nastavit téma *cesnet* jako používané, což provedeme v konfiguračním souboru `/var/www/farm/blackhole.cesnet.cz/conf/local.php`:
+
+```
+$conf['template'] = 'cesnet';
+```
+
 ### Animal #2, #3, ...
 
 Budeme-li chtít na našem serveru provozovat další instanci DokuWiki, jednoduše zavoláme opět skript `dokuwiki-addsite` s argumentem odpovídajícím názvu serveru a následně si doupravíme konfiguraci podle našich potřeb. Je samozřejmě potřeba také vytvořit další virtuální host v Apachi a toho následně restartovat.
