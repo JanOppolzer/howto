@@ -679,6 +679,8 @@ wget -P /usr/local/sbin \
 chmod 700 /usr/local/sbin/dokuwiki-*
 ```
 
+Ve skriptu `dokuwiki-addsite` je vhodné upravit na řádku 105 hodnotu proměnné `$conf['superuser']`, která je nastavena na hodnotu mého [eduPersonPrincipalName](https://www.eduid.cz/cs/tech/attributes/edupersonprincipalname), tedy `jop@cesnet.cz`. Zde nastavený správce je *superuživatel*.
+
 ### DokuWiki Shibboleth Auth
 
 Protože chceme využívat k přihlášení federaci identit eduID.cz, musíme si nainstalovat rozšíření pro DokuWiki, jejímž autorem je bývalý kolega Ivan Novakov. Toto rozšíření se nachází na GitHubu, odkud si ho naklonujeme utilitkou `git` pro snazší potenciální aktualizace.
