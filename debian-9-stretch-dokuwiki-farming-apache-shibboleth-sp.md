@@ -670,7 +670,25 @@ Zkusíme-li teď přistoupit k `https://blackhole.cesnet.cz`, objeví se informa
 
 ### Skripty pro "farming"
 
-Přestože existují rozšíření [Farmer Plugin](https://www.dokuwiki.org/plugin:farmer) (kvalitní dokumentace a poměrně hezké grafické rozhraní) nebo [farmsync Plugin](https://www.dokuwiki.org/plugin:farmsync), které "farming" výrazně zjednodušují, my půjdeme jinou cestou. V [dokumentaci](https://www.dokuwiki.org/farms) je velice kvalitně popsán ruční způsob, nad kterým byly v balíčku DokuWiki pro Debian 8 (Jessie) napsány dva skripty -- `dokuwiki-addsite` pro vytvoření nové instance a `dokuwiki-delsite` pro odstranění stávající instance. Tyto dva skripty z Debianu Jessie jsem lehce upravil pro naše použití a jsou k dispozici zde: [dokuwiki-addsite](https://github.com/JanOppolzer/howto/blob/master/dokuwiki-addsite), [dokuwiki-delsite](https://github.com/JanOppolzer/howto/blob/master/dokuwiki-delsite).
+Přestože existují rozšíření [Farmer Plugin](https://www.dokuwiki.org/plugin:farmer) (kvalitní dokumentace a poměrně hezké grafické rozhraní) nebo [farmsync Plugin](https://www.dokuwiki.org/plugin:farmsync), které "farming" výrazně zjednodušují, my půjdeme jinou cestou. V [dokumentaci](https://www.dokuwiki.org/farms) je velice kvalitně popsán ruční způsob, nad kterým byly v balíčku DokuWiki pro Debian 8 (Jessie) napsány dva skripty -- `dokuwiki-addsite` pro vytvoření nové instance a `dokuwiki-delsite` pro odstranění stávající instance. Tyto dva skripty z Debianu Jessie jsem lehce upravil pro naše použití a jsou k dispozici zde: [dokuwiki-addsite](https://github.com/JanOppolzer/howto/blob/master/dokuwiki-addsite), [dokuwiki-delsite](https://github.com/JanOppolzer/howto/blob/master/dokuwiki-delsite). Skripty umístíme do adresáře `/usr/local/sbin/` a nastavíme je jako spustitelné pro vlastníka (uživatele *root*).
+
+```bash
+wget -P /usr/local/sbin \
+    https://raw.githubusercontent.com/JanOppolzer/howto/master/dokuwiki-addsite \
+    https://raw.githubusercontent.com/JanOppolzer/howto/master/dokuwiki-delsite
+chmod 700 /usr/local/sbin/dokuwiki-*
+```
+
+### DokuWiki Shibboleth Auth
+
+Protože chceme využívat k přihlášení federaci identit eduID.cz, musíme si nainstalovat rozšíření pro DokuWiki, jejímž autorem je bývalý kolega Ivan Novakov. Toto rozšíření se nachází na GitHubu, odkud si ho naklonujeme utilitkou `git` pro snazší potenciální aktualizace.
+
+```bash
+apt install git
+mkdir -p /opt/src/
+git clone https://github.com/JanOppolzer/dokuwiki-shibboleth-auth /opt/src/dokuwiki-shibboleth-auth
+cp -r /opt/src/dokuwiki-shibboleth-auth/plugin/authshibboleth/ /opt/dokuwiki/lib/plugins/
+```
 
 ### Animal #1
 
@@ -688,16 +706,6 @@ dokuwiki-addsite blackhole1.cesnet.cz
 
 ```bash
 dokuwiki-addsite blackhole1.cesnet.cz
-```
-
-### DokuWiki Shibboleth Auth
-
-```bash
-apt install git
-mkdir -p /opt/src/
-cd /opt/src/
-git clone https://github.com/JanOppolzer/dokuwiki-shibboleth-auth
-cp -r dokuwiki-shibboleth-auth/plugin/authshibboleth/ /opt/dokuwiki/lib/plugins/
 ```
 
 ### Úpravy v DokuWiki
