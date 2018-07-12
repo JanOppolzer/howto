@@ -810,6 +810,10 @@ Nechceme, aby se na stránce zobrazoval přihlašovací formulář, pokud nepři
 
 FIXME
 
+### Poznámka k rozšířením
+
+**Pokud můžete, VYHNĚTE se rozšířením!** Pokud si rozšíření nenapíšete sami a nejste ochotni se o něj starat, je vysoká pravděpodobnost, že rozšíření v další verzi DokuWiki bude fungovat špatně anebo dokonce vůbec a bude třeba vyvinout netriviální úsilí, aby opět fungovalo. Může se také stát, že se rozšíření bude nadále vyvíjet, ovšem způsobem, který bude naprosto nevyhovující. Takže ještě jednou: **pokud můžete, VYHNĚTE se rozšířením!**
+
 ### Migrace stávajících DokuWiki instancí
 
 Chceme-li [přenést](https://www.dokuwiki.org/faq:servermove) stávající DokuWiki do námi právě vytvořené "farmy", stačí přenést **celý datový adresář** (na Debianu 8/Jessie se jedná o adresář `/var/lib/dokuwiki/data/`) ze starého serveru na nový. Musíme však pamatovat na správné umístění na novém serveru s farmou, tedy `/var/www/farm/<jméno_dokuwiki_instance>/data/`, přičemž novou instanci si nejprve vytvoříme příkazem `dokuwiki-addsite <jméno_dokuwiki_instance>`.
