@@ -613,8 +613,10 @@ V konfiguraci Apache musíme dále provést následující změny, aby se zobraz
               
         AuthType shibboleth
         Require shibboleth
-        ShibRequestSetting  requireSession 0    # lazy sessions
-        #ShibRequestSetting requireSession 1    # required sessions (only authenticated users)
+        # lazy sessions
+        ShibRequestSetting  requireSession 0
+        # required sessions (only authenticated users)
+        #ShibRequestSetting requireSession 1
 
         Order Deny,Allow
         Allow from all
