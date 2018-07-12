@@ -450,6 +450,12 @@ Nyní je potřeba do nastavení jednotlivých virutálních hostů přidat násl
 </Location>
 ```
 
+Aby bylo nastavení respektováno, je nutné restartovat Apache:
+
+```bash
+systemctl restart apache2
+```
+
 Nyní, přistoupíme-li na `https://blackhole.cesnet.cz/shib1/` (případně `https://blackhole1.cesnet.cz/shib1/` nebo `https://blackhole2.cesnet.cz/shib1/`), uvidíme text `shib1`. V tomto adresáři, ač je aktivován Shibboleth, není vyžadováno, aby existovalo sezení. Jedná se o tzv. _přihlášení na vyžádání_ (v angličtině _lazy session_).
 
 Pokud však přistoupíme na `https://blackhole.cesnet.cz/shib2/` (případně `https://blackhole1.cesnet.cz/shib2/` nebo `https://blackhole2.cesnet.cz/shib2/`), budeme přesměrováni na stránku, kde si vybereme svého poskytovatele identity, u něhož se chceme ověřit svým přihlašovacím jménem a heslem. Teprve po úspěšném přihlášení uvidíme na těchto stránkách text `shib2`. (Budeme-li se ověřovat pokaždé u stejné domovské organizace, vytvoříme si poprvé sezení na IdP, takže nebudeme muset v dalších případech zadávat jméno a heslo, budeme-li používat stále stejný webový prohlížeč a budeme-li mít stále cookies z předchozího přihlášení.)
