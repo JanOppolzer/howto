@@ -700,7 +700,40 @@ Vytvoříme si první instanci:
 dokuwiki-addsite blackhole.cesnet.cz
 ```
 
-Veškerá data (= stránky, které vytvoříme) jsou uložena v adresáři `/var/www/farm/azog.cesnet.cz/data/` a všechna nastavení v adresáři `/var/www/farm/azog.cesnet.cz/conf/`.
+Veškerá data (= stránky, které vytvoříme) jsou uložena v adresáři `/var/www/farm/azog.cesnet.cz/data/`. Všechna nastavení v adresáři `/var/www/farm/azog.cesnet.cz/conf/`, kde musíme provést určité změny.
+
+#### Federativní autentizace
+
+V souboru `/var/www/farm/blackhole.cesnet.cz/authshibboleth.conf.php` si nastavíme mapování skupin z Atributové autority (Peruna) na skupiny v DokuWiki:
+
+```php
+<?php
+
+$conf['plugin']['authshibboleth'] = array(
+    'group_source_config' => array(
+
+        'entitlement' => array(
+            'type' => 'environment',
+            'options' => array(
+                'source_attribute' => 'perunUniqueGroupName',
+                'map' => array(
+                    'VIRTUAL_ORGANIZATION:GROUP:SUBGROUP' => 'SUBGROUP',
+                    'cesnet:blackhole:admins'             => 'admins',
+                    'cesnet:blackhole'                    => 'blackhole'
+                ),
+                'prefix' => ''
+            )
+        ),
+
+        'custom' => array(
+            'type' => 'file',
+            'options' => array(
+                'path' => __DIR__ . '/custom_groups.php'
+            )
+        )
+    ),
+);
+```
 
 ### Animal #2, #3, ...
 
