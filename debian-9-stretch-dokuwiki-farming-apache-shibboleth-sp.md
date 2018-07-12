@@ -437,17 +437,28 @@ mv shib[12] /var/www/blackhole.cesnet.cz/
 Nyní je potřeba do nastavení jednotlivých virutálních hostů přidat následující řádky, aby se o přístup k adresářům staral Shibboleth. Přístup do adresáře `shib1/` nevyžaduje aktivní sezení v Shibbolethu, adresář `shib2/` už ale ano, a tak budeme v případě neexistujícího sezení nejprve přesměrováni na WAYF, abychom se přihlásili u své domovské organizace -- teprve pak se zobrazí obsah adresáře `shib2/`.
 
 ```apache
-<Location /shib1>
-    AuthType shibboleth
-    Require shibboleth
-    ShibRequestSetting requireSession 0
-</Location>
+<VirtualHost *:443>
 
-<Location /shib2>
-    AuthType shibboleth
-    Require shibboleth
-    ShibRequestSetting requireSession 1
-</Location>
+    ServerName              blackhole.cesnet.cz
+    ServerAdmin             jan.oppolzer@cesnet.cz
+
+    #
+    # ... Apache configuration ...
+    #
+
+    <Location /shib1>
+        AuthType shibboleth
+        Require shibboleth
+        ShibRequestSetting requireSession 0
+    </Location>
+
+    <Location /shib2>
+        AuthType shibboleth
+        Require shibboleth
+        ShibRequestSetting requireSession 1
+    </Location>
+
+</VirtualHost>
 ```
 
 Aby bylo nastavení respektováno, je nutné restartovat Apache:
