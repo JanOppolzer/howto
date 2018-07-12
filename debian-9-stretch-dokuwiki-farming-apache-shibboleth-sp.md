@@ -666,15 +666,7 @@ include(fullpath(dirname(__FILE__)).'/farm.php');
 if(DOKU_FARM == false) { nice_die('Access to the farmer denied'); }
 ```
 
-### DokuWiki Shibboleth Auth
-
-```bash
-apt install git
-mkdir -p /opt/src/
-cd /opt/src/
-git clone https://github.com/JanOppolzer/dokuwiki-shibboleth-auth
-cp -r dokuwiki-shibboleth-auth/plugin/authshibboleth/ /opt/dokuwiki/lib/plugins/
-```
+Zkusíme-li teď přistoupit k `https://blackhole.cesnet.cz`, objeví se informace *DokuWiki Setup Error Access to the farmer denied*. To je tím, že jsme zakázali přístup k základní instanci. Chceme totiž, aby všechna naše data byla v `/var/www/farm/` a nic se nenacházelo přímo v DokuWiki, tedy `/opt/dokuwiki/`.
 
 ### Skripty pro "farming"
 
@@ -696,6 +688,16 @@ dokuwiki-addsite blackhole1.cesnet.cz
 
 ```bash
 dokuwiki-addsite blackhole1.cesnet.cz
+```
+
+### DokuWiki Shibboleth Auth
+
+```bash
+apt install git
+mkdir -p /opt/src/
+cd /opt/src/
+git clone https://github.com/JanOppolzer/dokuwiki-shibboleth-auth
+cp -r dokuwiki-shibboleth-auth/plugin/authshibboleth/ /opt/dokuwiki/lib/plugins/
 ```
 
 ### Úpravy v DokuWiki
