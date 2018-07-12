@@ -679,7 +679,11 @@ wget -P /usr/local/sbin \
 chmod 700 /usr/local/sbin/dokuwiki-*
 ```
 
-Ve skriptu `dokuwiki-addsite` je vhodné upravit na řádku 105 hodnotu proměnné `$conf['superuser']`, která je nastavena na hodnotu mého [eduPersonPrincipalName](https://www.eduid.cz/cs/tech/attributes/edupersonprincipalname), tedy `jop@cesnet.cz`. Zde nastavený správce je *superuživatel*.
+Ve skriptu `dokuwiki-addsite` je vhodné upravit na řádku 105 hodnotu proměnné `$conf['superuser']`, která je nastavena na hodnotu mého [eduPersonPrincipalName](https://www.eduid.cz/cs/tech/attributes/edupersonprincipalname), tedy `jop@cesnet.cz`. Zde nastavený správce je *superuživatel*:
+
+```bash
+105 \$conf['superuser'] = 'jop@cesnet.cz';
+```
 
 ### DokuWiki Shibboleth Auth
 
