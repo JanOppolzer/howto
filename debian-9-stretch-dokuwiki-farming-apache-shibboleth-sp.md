@@ -690,22 +690,25 @@ git clone https://github.com/JanOppolzer/dokuwiki-shibboleth-auth /opt/src/dokuw
 cp -r /opt/src/dokuwiki-shibboleth-auth/plugin/authshibboleth/ /opt/dokuwiki/lib/plugins/
 ```
 
+Nyní již můžeme přistoupit k vytváření jednotlivých instancí DokuWiki a jejich následné konfiguraci.
+
 ### Animal #1
+
+Vytvoříme si první instanci:
 
 ```bash
 dokuwiki-addsite blackhole.cesnet.cz
 ```
 
-### Animal #2
+Veškerá data (= stránky, které vytvoříme) jsou uložena v adresáři `/var/www/farm/azog.cesnet.cz/data/` a všechna nastavení v adresáři `/var/www/farm/azog.cesnet.cz/conf/`.
+
+### Animal #2, #3, ...
+
+Budeme-li chtít na našem serveru provozovat další instanci DokuWiki, jednoduše zavoláme opět skript `dokuwiki-addsite` s argumentem odpovídajícím názvu serveru a následně si doupravíme konfiguraci podle našich potřeb. Je samozřejmě potřeba také vytvořit další virtuální host v Apachi a toho následně restartovat.
 
 ```bash
 dokuwiki-addsite blackhole1.cesnet.cz
-```
-
-### Animal #3
-
-```bash
-dokuwiki-addsite blackhole1.cesnet.cz
+dokuwiki-addsite blackhole2.cesnet.cz
 ```
 
 ### Úpravy v DokuWiki
