@@ -77,6 +77,10 @@ Nejprve nakonfigurujeme server `blackhole.cesnet.cz`. Vytvoříme konfigurační
     SSLHonorCipherOrder     On
     SSLCompression          Off
     Header                  always set Strict-Transport-Security "max-age=15768000"
+    Header                  always set X-Content-Type-Options    "nosniff"
+    Header                  always set X-Xss-Protection          "1; mode=block"
+    Header                  always set X-Frame-Options           "DENY"
+    Header                  always set Referrer-Policy           "no-referrer-when-downgrade"
     SSLCipherSuite          'EDH+CAMELLIA:EDH+aRSA:EECDH+aRSA+AESGCM:EECDH+aRSA+SHA384:EECDH+aRSA+SHA256:EECDH:+CAMELLIA256:+AES256:+CAMELLIA128:+AES128:+SSLv3:!aNULL:!eNULL:!LOW:!3DES:!MD5:!EXP:!PSK:!DSS:!RC4:!SEED:!ECDSA:CAMELLIA256-SHA:AES256-SHA:CAMELLIA128-SHA:AES128-SHA'
 
     SSLCertificateFile      /etc/ssl/certs/blackhole.cesnet.cz.crt.pem
@@ -85,7 +89,7 @@ Nejprve nakonfigurujeme server `blackhole.cesnet.cz`. Vytvoříme konfigurační
 </VirtualHost>
 ```
 
-**FIXME: HTTP hlavičky**
+**FIXME: HTTP Content-Security-Policy**
 
 
 Vytvoříme adresář `/var/www/blackhole.cesnet.cz/` a v něm soubor `index.html` obsahující pouze text `blackhole.cesnet.cz`.
@@ -137,6 +141,10 @@ Konfigurační soubor `/etc/apache2/sites-available/blackhole1.cesnet.cz.conf`:
     SSLHonorCipherOrder     On
     SSLCompression          Off
     Header                  always set Strict-Transport-Security "max-age=15768000"
+    Header                  always set X-Content-Type-Options    "nosniff"
+    Header                  always set X-Xss-Protection          "1; mode=block"
+    Header                  always set X-Frame-Options           "DENY"
+    Header                  always set Referrer-Policy           "no-referrer-when-downgrade"
     SSLCipherSuite          'EDH+CAMELLIA:EDH+aRSA:EECDH+aRSA+AESGCM:EECDH+aRSA+SHA384:EECDH+aRSA+SHA256:EECDH:+CAMELLIA256:+AES256:+CAMELLIA128
 
     SSLCertificateFile      /etc/ssl/certs/blackhole.cesnet.cz.crt.pem
@@ -172,6 +180,10 @@ Konfigurační soubor `/etc/apache2/sites-available/blackhole2.cesnet.cz.conf`:
     SSLHonorCipherOrder     On
     SSLCompression          Off
     Header                  always set Strict-Transport-Security "max-age=15768000"
+    Header                  always set X-Content-Type-Options    "nosniff"
+    Header                  always set X-Xss-Protection          "1; mode=block"
+    Header                  always set X-Frame-Options           "DENY"
+    Header                  always set Referrer-Policy           "no-referrer-when-downgrade"
     SSLCipherSuite          'EDH+CAMELLIA:EDH+aRSA:EECDH+aRSA+AESGCM:EECDH+aRSA+SHA384:EECDH+aRSA+SHA256:EECDH:+CAMELLIA256:+AES256:+CAMELLIA128
 
     SSLCertificateFile      /etc/ssl/certs/blackhole.cesnet.cz.crt.pem
@@ -595,6 +607,10 @@ V konfiguraci Apache musíme dále provést následující změny, aby se zobraz
     SSLHonorCipherOrder     On
     SSLCompression          Off
     Header                  always set Strict-Transport-Security "max-age=15768000"
+    Header                  always set X-Content-Type-Options    "nosniff"
+    Header                  always set X-Xss-Protection          "1; mode=block"
+    Header                  always set X-Frame-Options           "DENY"
+    Header                  always set Referrer-Policy           "no-referrer-when-downgrade"
     SSLCipherSuite          'EDH+CAMELLIA:EDH+aRSA:EECDH+aRSA+AESGCM:EECDH+aRSA+SHA384:EECDH+aRSA+SHA256:EECDH:+CAMELLIA256:+AES256:+CAMELLIA128:+AES128:+SSLv3:!aNULL:!eNULL:!LOW:!3DES:!MD5:!EXP:!PSK:!DSS:!RC4:!SEED:!ECDSA:CAMELLIA256-SHA:AES256-SHA:CAMELLIA128-SHA:AES128-SHA'
 
     SSLCertificateFile      /etc/ssl/certs/blackhole.cesnet.cz.crt.pem
