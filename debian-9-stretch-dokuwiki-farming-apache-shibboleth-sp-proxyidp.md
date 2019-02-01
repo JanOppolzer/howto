@@ -804,7 +804,7 @@ Nechceme, aby se na stránce zobrazoval přihlašovací formulář, pokud nepři
 84
 85     if(empty($_SERVER['REMOTE_USER'])){
 86         //html_login();
-87         print "<p>Možná jste se zapomněl(a) přihlásit.</p>";
+87         print "<p>Možná jste se zapomněl(a) <a href=\"javascript:document.getElementById('cesnet_login_link').click();\">přihlásit</a>.</p>";
 88     }
 89 }
 ```
