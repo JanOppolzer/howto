@@ -102,7 +102,7 @@ include __DIR__ . '/authshibboleth.conf.php';
 \$conf['authtype'] = 'authshibboleth';
 \$conf['savedir'] = DOKU_CONF.'../data';
 \$conf['updatecheck'] = 0;
-\$conf['superuser'] = 'jop@cesnet.cz';
+#\$conf['superuser'] = 'johndoe@example.org';
 EOF
 
 ###########################################
