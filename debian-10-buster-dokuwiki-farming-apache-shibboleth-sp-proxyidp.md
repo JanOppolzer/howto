@@ -2,6 +2,8 @@
 
 Tento návod navazuje na [předchozí variantu pro Debian 9 (Stretch)](https://github.com/JanOppolzer/howto/blob/master/debian-9-stretch-dokuwiki-farming-apache-shibboleth-sp-proxyidp.md), ale využívá Debian 10 (Buster), kde je několik naprosto marginálních rozdílů.
 
+**Tento návod již NENÍ nadále udržovaný. V případě dotazů je vhodné kontaktovat Jirku Ráže, který provozuje ve sdružení CESNET farmu DokuWiki.**
+
 ## Úvod
 
 V případě, že chceme provozovat několik různých DokuWiki instancí pro různé projekty, není potřeba mít pro každou DokuWiki vlastní [virtuální nebo fyzický] server a starat se tak o několik operačních systémů. Je možné použít tzv. [DokuWiki Farming](https://www.dokuwiki.org/farms).
@@ -348,7 +350,7 @@ Aby fungovalo přihlašování přes ProxyIdP, je nutné stahovat metadata Proxy
 
 ```xml
 <!-- ProxyIdP -->
-<MetadataProvider type="XML" uri="https://login.cesnet.cz/proxy/saml2/idp/metadata.php"
+<MetadataProvider type="XML" url="https://login.cesnet.cz/proxy/saml2/idp/metadata.php"
     backingFilePath="proxyidp.xml" reloadInterval="600">
     <MetadataFilter type="Signature" certificate="/etc/ssl/certs/proxyidp.crt.pem"/>
 </MetadataProvider>
